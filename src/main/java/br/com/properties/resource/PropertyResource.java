@@ -1,20 +1,14 @@
 package br.com.properties.resource;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.properties.dto.ErrorResponse;
-import br.com.properties.dto.ErrorType;
 import br.com.properties.dto.PropertiesResponse;
 import br.com.properties.dto.Property;
 import br.com.properties.dto.PropertySearch;
@@ -121,24 +114,4 @@ public class PropertyResource {
 		
 		return ResponseEntity.ok(null);
 	}
-	
-	@ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<?> handleException(MethodArgumentNotValidException e) {
- 
-        List<String> reason = e.getBindingResult().getFieldErrors().stream()
-                .map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.toList());
-        
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ErrorType.INVALID_DATA_VALUES, reason), HttpStatus.BAD_REQUEST);
-    }
-	
-//	@ExceptionHandler
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    public ResponseEntity<?> handleException(Exception e) {
-// 
-//        List<String> reason = new ArrayList<String>();
-//        reason.add(e.getMessage());
-//        
-//        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ErrorType.INVALID_DATA_VALUES, reason), HttpStatus.BAD_REQUEST);
-//    }
 }
