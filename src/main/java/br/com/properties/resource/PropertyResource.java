@@ -1,6 +1,5 @@
 package br.com.properties.resource;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -25,7 +25,7 @@ public class Property implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@NotEmpty(message="title is required")
-	@Size(min = 1, max = 30, message="title: size must be between 1 and 100 characters")
+	@Size(min = 1, max = 100, message="title: size must be between 1 and 100 characters")
 	@ApiModelProperty(value = "Titulo da propriedade", required=true)
 	private String title;
 	
@@ -34,7 +34,7 @@ public class Property implements Serializable {
 	private BigDecimal price;
 	
 	@NotEmpty(message="description is required")
-	@Size(min = 1, max = 100, message="description: size must be between 1 and 100 characters")
+	@Size(min = 1, max = 250, message="description: size must be between 1 and 250 characters")
 	@ApiModelProperty(value = "Descricao", required=true)
 	private String description;
 	
@@ -59,8 +59,8 @@ public class Property implements Serializable {
 	private Integer baths;
 	
 	@NotNull(message="squareMeters is required")
-	@Min(value=20, message="the baths must be greater than or equal 20")
-	@Max(value=240, message="the baths must be less than or equal to 240")
+	@Min(value=20, message="the squareMeters must be greater than or equal 20")
+	@Max(value=240, message="the squareMeters must be less than or equal to 240")
 	@ApiModelProperty(value = "Metro quadrado", required=true)
 	private Integer squareMeters;
 	

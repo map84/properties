@@ -3,6 +3,8 @@ package br.com.properties.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.math.BigDecimal;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +57,7 @@ public class PropertyRepositoryTest {
     	PropertyEntity entity = new PropertyEntity();
     	entity.setBathrooms(2);
     	entity.setBedrooms(3);
+    	entity.setPrice(new BigDecimal("456000"));
     	entity.setCode(null);
     	entity.setDescription("Laboris quis quis elit commodo eiusmod qui exercitation. In laborum fugiat quis minim occaecat id.");
     	entity.setLatitude(1257);

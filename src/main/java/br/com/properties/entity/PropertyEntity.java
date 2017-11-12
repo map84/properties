@@ -36,43 +36,43 @@ public class PropertyEntity implements Serializable {
 	@Column(name="CD_PROPRIEDADE")
 	private Long code;
 	
-	@NotEmpty
-	@Size(min = 1, max = 30)
-	@Column(name="NO_PROPRIEDADE", length = 30)
+	@NotEmpty(message="title is required")
+	@Size(min = 1, max = 100, message="name: size must be between 1 and 100 characters")
+	@Column(name="NO_PROPRIEDADE", length = 100)
 	private String name;
 	
-	@NotNull
+	@NotNull(message="price is required")
 	@Column(name="VL_PRECO")
 	private BigDecimal price;
 	
-	@NotEmpty
-	@Size(min = 1, max = 100, message="description: size must be between 1 and 100 characters")
-	@Column(name="DC_PROPRIEDADE", length = 100)
+	@NotEmpty(message="description is required")
+	@Size(min = 1, max = 250, message="description: size must be between 1 and 250 characters")
+	@Column(name="DC_PROPRIEDADE", length = 250)
 	private String description;
 	
-	@NotNull
+	@NotNull(message="latitude is required")
 	@Column(name="NU_LATITUDE")
 	private Integer latitude;
 	
-	@NotNull
+	@NotNull(message="longitude is required")
 	@Column(name="NU_LONGITUDE")
 	private Integer longitude;
 	
-	@NotNull
-	@Min(value=1)
-	@Max(value=5)
+	@NotNull(message="bedrooms is required")
+	@Min(value=1, message="the bedrooms must be greater than 0")
+	@Max(value=5, message="the bedrooms must be less than or equal to 5")
 	@Column(name="NU_QUARTO")
 	private Integer bedrooms;
 	
-	@NotNull
-	@Min(value=1)
-	@Max(value=4)
+	@NotNull(message="bathrooms is required")
+	@Min(value=1, message="the bathrooms must be greater than 0")
+	@Max(value=4, message="the bathrooms must be less than or equal to 4")
 	@Column(name="NU_BANHEIRO")
 	private Integer bathrooms;
 	
-	@NotNull
-	@Min(value=20)
-	@Max(value=240)
+	@NotNull(message="meters is required")
+	@Min(value=20, message="the meters must be greater than or equal 20")
+	@Max(value=240, message="the meters must be less than or equal to 240")
 	@Column(name="NU_METRO")
 	private Integer meters;
 	

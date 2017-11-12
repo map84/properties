@@ -19,6 +19,7 @@ public class PropertySearchMapper implements OrikaMapperFactoryConfigurer {
         .field("beds", "bedrooms")
         .field("baths", "bathrooms")
         .field("squareMeters", "meters")
+        .field("id", "code")
         .field("provinces{}", "provinces{name}")
         .byDefault()
         .register();

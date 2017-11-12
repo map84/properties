@@ -6,8 +6,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -30,7 +28,7 @@ public class ProvinceEntity implements Serializable {
 	@Column(name="CD_PROVINCIA")
 	private Integer code;
 	
-	@NotEmpty
+	@NotEmpty(message="province name is required")
 	@Size(min = 1, max = 30, message="provincia name: size must be between 1 and 30 characters")
 	@Column(name="NO_PROVINCIA", length = 30)
 	private String name;
