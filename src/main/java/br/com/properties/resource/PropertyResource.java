@@ -1,5 +1,8 @@
 package br.com.properties.resource;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -99,7 +102,7 @@ public class PropertyResource {
 	
 	@ResponseStatus(HttpStatus.OK)
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	@ApiOperation(value = "Busca uma propriedade", response = PropertiesResponse.class)
+	@ApiOperation(value = "Busca propriedades a partir de 2 coordenadas", response = PropertiesResponse.class)
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Success", response = PropertiesResponse.class),
 			@ApiResponse(code = 404, message = "NotFound", response = ErrorResponse.class),
@@ -110,8 +113,15 @@ public class PropertyResource {
 			@RequestParam(name="bx", required = true) Integer bx,
 			@RequestParam(name="by", required = true) Integer by) throws Exception {
 		
-		LOGGER.debug("StatusCode: {}, RequestURI: {}", HttpStatus.OK.value(), URL);
+		PropertiesResponse response = new PropertiesResponse();
+		List<PropertyEntity> entities = repository.findByCoordinates(ax, ay, bx, by);
+		response.setFoundProperties(entities.size());
+		response.setProperties(new ArrayList<PropertySearch>());
+		entities.forEach(entity->response.getProperties().add(orikaMapperFacade.map(entity, PropertySearch.class)));
 		
-		return ResponseEntity.ok(null);
+		LOGGER.debug("StatusCode: {}, RequestURI: {}, MEssage: Propriedades encontradas: {}", 
+				HttpStatus.OK.value(), URL, response.getFoundProperties());
+		
+		return ResponseEntity.ok(response);
 	}
 }

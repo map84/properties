@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,6 +51,14 @@ public class PropertyRepositoryTest {
         
         assertEquals(4, entity.getBathrooms().intValue());
         assertEquals(3, entity.getBedrooms().intValue());
+    }
+    
+    @Test
+    @Transactional
+    public void search() {
+    	
+       List<PropertyEntity> entities = repository.findByCoordinates(1, 3, 3, 4);
+        assertEquals(0, entities.size());
     }
     
     private PropertyEntity getEntity() {
