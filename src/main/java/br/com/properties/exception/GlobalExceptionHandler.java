@@ -1,6 +1,6 @@
 package br.com.properties.exception;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,10 +31,16 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<?> handleException(Exception e) {
- 
-        List<String> reason = new ArrayList<String>();
-        reason.add(e.getMessage());
+	        
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ErrorType.GENERIC, 
+        		Arrays.asList(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+	
+	@ExceptionHandler
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<?> handleException(ProvinceException e) {
         
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ErrorType.INVALID_DATA_VALUES, reason), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(ErrorType.BUSINESS, 
+        		Arrays.asList(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

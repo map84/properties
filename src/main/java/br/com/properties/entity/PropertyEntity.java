@@ -76,7 +76,7 @@ public class PropertyEntity implements Serializable {
 	@Column(name="NU_METRO")
 	private Integer meters;
 	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	@OneToMany(cascade=CascadeType.PERSIST, fetch=FetchType.EAGER)
 	private List<ProvinceEntity> provinces;
 
 	/**

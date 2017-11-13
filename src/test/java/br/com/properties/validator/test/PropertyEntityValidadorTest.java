@@ -1,9 +1,7 @@
-package br.com.properties.test;
+package br.com.properties.validator.test;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -16,8 +14,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import br.com.properties.builder.test.BuilderTest;
 import br.com.properties.entity.PropertyEntity;
-import br.com.properties.entity.ProvinceEntity;
 
 /**
  * @author Marcos Alves
@@ -33,7 +31,7 @@ public class PropertyEntityValidadorTest {
     @Test
     public void testValidatdorSuccessPropertyEntity() {
     	
-    	PropertyEntity entity = getEntity();
+    	PropertyEntity entity = BuilderTest.getPropertyEntity();
     	Set<ConstraintViolation<PropertyEntity>> violations = validator.validate(entity);
     	assertEquals(0, violations.size());
     }
@@ -44,69 +42,41 @@ public class PropertyEntityValidadorTest {
     	PropertyEntity entity = new PropertyEntity();
     	Set<ConstraintViolation<PropertyEntity>> violations = validator.validate(entity);
     	assertEquals(8, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("required")).count());
+    		.filter(message->message.contains(BuilderTest.MSG_REQUIRED)).count());
     }
     
     @Test
     public void testValidatdorSizeMustBeBetweenPropertyEntity() {
     	
-    	PropertyEntity entity = getEntity();
+    	PropertyEntity entity = BuilderTest.getPropertyEntity();
     	entity.setDescription("");
     	entity.setName("");
     	Set<ConstraintViolation<PropertyEntity>> violations = validator.validate(entity);
     	assertEquals(2, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("size must be between")).count());
+    		.filter(message->message.contains(BuilderTest.MSG_SIZE)).count());
     }
     
     @Test
     public void testValidatdorMinMustBeGreaterThanPropertyEntity() {
     	
-    	PropertyEntity entity = getEntity();
+    	PropertyEntity entity = BuilderTest.getPropertyEntity();
     	entity.setBathrooms(0);
     	entity.setBedrooms(0);
     	entity.setMeters(0);
     	Set<ConstraintViolation<PropertyEntity>> violations = validator.validate(entity);
     	assertEquals(3, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("must be greater than")).count());
+    		.filter(message->message.contains(BuilderTest.MSG_MUST_GREATER)).count());
     }
     
     @Test
     public void testValidatdorMaxMustBeLessThanOrEqualPropertyEntity() {
     	
-    	PropertyEntity entity = getEntity();
+    	PropertyEntity entity = BuilderTest.getPropertyEntity();
     	entity.setBathrooms(5);
     	entity.setBedrooms(6);
     	entity.setMeters(241);
     	Set<ConstraintViolation<PropertyEntity>> violations = validator.validate(entity);
     	assertEquals(3, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("must be less than or equal")).count());
-    }
-    
-    private PropertyEntity getEntity() {
-    	
-    	PropertyEntity entity = new PropertyEntity();
-    	entity.setBathrooms(2);
-    	entity.setBedrooms(3);
-    	entity.setCode(1l);
-    	entity.setDescription("Laboris quis quis elit commodo eiusmod qui exercitation. In laborum fugiat quis minim occaecat id.");
-    	entity.setLatitude(1257);
-    	entity.setLongitude(928);
-    	entity.setMeters(61);
-    	entity.setPrice(new BigDecimal("456000"));
-    	entity.setName("Imóvel código 1, com 3 quartos e 2 banheiros.");
-    	entity.setProvinces(new ArrayList<ProvinceEntity>());
-    	
-    	ProvinceEntity entity1 = new ProvinceEntity();
-    	entity1.setCode(1);
-    	entity1.setName("Province One");
-    	
-    	ProvinceEntity entity2 = new ProvinceEntity();
-    	entity2.setCode(1);
-    	entity2.setName("Province Two");
-    	
-    	entity.getProvinces().add(entity1);
-    	entity.getProvinces().add(entity2);
-    	
-    	return entity;
+    		.filter(message->message.contains(BuilderTest.MSG_MUST_LESS)).count());
     }
 }

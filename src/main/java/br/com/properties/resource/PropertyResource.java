@@ -1,8 +1,5 @@
 package br.com.properties.resource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -24,13 +21,11 @@ import br.com.properties.dto.ErrorResponse;
 import br.com.properties.dto.PropertiesResponse;
 import br.com.properties.dto.Property;
 import br.com.properties.dto.PropertySearch;
-import br.com.properties.entity.PropertyEntity;
-import br.com.properties.repository.PropertyRepository;
+import br.com.properties.service.PropertyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
-import ma.glasnost.orika.MapperFacade;
 
 /**
  * 
@@ -47,10 +42,7 @@ public class PropertyResource {
 	private static final String URL = "/properties/";
 	
 	@Autowired
-	private MapperFacade orikaMapperFacade;
-	
-	@Autowired
-	private PropertyRepository repository;
+	private PropertyService service;
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@RequestMapping(method = RequestMethod.POST)
@@ -60,14 +52,13 @@ public class PropertyResource {
 			@ApiResponse(code = 500, message = "Error", response = ErrorResponse.class) })
 	public ResponseEntity<?> add(@Valid @RequestBody Property request, UriComponentsBuilder uriBuilder) throws Exception {
 
-		PropertyEntity entity = orikaMapperFacade.map(request, PropertyEntity.class);
-		entity = repository.save(entity);
+		Long id = service.save(request);
 		
 		LOGGER.debug("StatusCode: {}, RequestURI: {}, Message: Propriedade criada com sucesso [ID {}]",
-				HttpStatus.CREATED.value(), URL, entity.getCode());
+				HttpStatus.CREATED.value(), URL, id);
 		
 		return ResponseEntity
-				.created(uriBuilder.path(URL + "{id}").buildAndExpand(entity.getCode()).toUri())
+				.created(uriBuilder.path(URL + "{id}").buildAndExpand(id).toUri())
 				.body(request);
 	}
 	
@@ -80,9 +71,9 @@ public class PropertyResource {
 			@ApiResponse(code = 500, message = "Error", response = ErrorResponse.class) })
 	public ResponseEntity<?> get(@PathVariable(name="id", required = true) Long id) throws Exception {
 
-		PropertyEntity entity = repository.findOne(id);
+		Property response = service.findById(id);
 		
-		if (entity == null) {
+		if (response == null) {
 			
 			LOGGER.debug("StatusCode: {}, RequestURI: {}, Message: Propriedade nao foi encontrada [ID {}]",
 					HttpStatus.NOT_FOUND.value(), URL, id);
@@ -90,8 +81,6 @@ public class PropertyResource {
 			return ResponseEntity.notFound().build();
 			
 		} else {
-			
-			Property response = orikaMapperFacade.map(entity, Property.class);
 			
 			LOGGER.debug("StatusCode: {}, RequestURI: {}, Message: Propriedade encontrada [ID {}]", HttpStatus.OK.value(),
 					URL, id);
@@ -113,11 +102,7 @@ public class PropertyResource {
 			@RequestParam(name="bx", required = true) Integer bx,
 			@RequestParam(name="by", required = true) Integer by) throws Exception {
 		
-		PropertiesResponse response = new PropertiesResponse();
-		List<PropertyEntity> entities = repository.findByCoordinates(ax, ay, bx, by);
-		response.setFoundProperties(entities.size());
-		response.setProperties(new ArrayList<PropertySearch>());
-		entities.forEach(entity->response.getProperties().add(orikaMapperFacade.map(entity, PropertySearch.class)));
+		PropertiesResponse response = service.findByTwoCoordinates(ax, ay, bx, by);
 		
 		LOGGER.debug("StatusCode: {}, RequestURI: {}, MEssage: Propriedades encontradas: {}", 
 				HttpStatus.OK.value(), URL, response.getFoundProperties());

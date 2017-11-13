@@ -1,9 +1,8 @@
-package br.com.properties.test;
+package br.com.properties.repository.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import org.junit.Test;
@@ -15,6 +14,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.properties.builder.test.BuilderTest;
 import br.com.properties.entity.PropertyEntity;
 import br.com.properties.repository.PropertyRepository;
 
@@ -35,7 +35,7 @@ public class PropertyRepositoryTest {
     @Transactional
     public void save() {
     	
-    	PropertyEntity entity = repository.save(getEntity());
+    	PropertyEntity entity = repository.save(BuilderTest.getPropertyEntity());
         assertNotNull(repository.findOne(entity.getCode()));
     }
     
@@ -43,7 +43,7 @@ public class PropertyRepositoryTest {
     @Transactional
     public void update() {
     	
-    	PropertyEntity entity = repository.save(getEntity());
+    	PropertyEntity entity = repository.save(BuilderTest.getPropertyEntity());
         entity.setBathrooms(4);
         entity.setBedrooms(3);
         entity = repository.save(entity);
@@ -59,21 +59,5 @@ public class PropertyRepositoryTest {
     	
        List<PropertyEntity> entities = repository.findByCoordinates(1, 3, 3, 4);
         assertEquals(0, entities.size());
-    }
-    
-    private PropertyEntity getEntity() {
-    	
-    	PropertyEntity entity = new PropertyEntity();
-    	entity.setBathrooms(2);
-    	entity.setBedrooms(3);
-    	entity.setPrice(new BigDecimal("456000"));
-    	entity.setCode(null);
-    	entity.setDescription("Laboris quis quis elit commodo eiusmod qui exercitation. In laborum fugiat quis minim occaecat id.");
-    	entity.setLatitude(1257);
-    	entity.setLongitude(928);
-    	entity.setMeters(61);
-    	entity.setName("Imóvel código 1, com 3 quartos e 2 banheiros.");
-    	
-    	return entity;
     }
 }

@@ -1,4 +1,4 @@
-package br.com.properties.test;
+package br.com.properties.repository.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.com.properties.builder.test.BuilderTest;
 import br.com.properties.entity.ProvinceEntity;
 import br.com.properties.repository.ProvinceRepository;
 
@@ -32,7 +33,7 @@ public class ProvinceRepositoryTest {
     @Transactional
     public void save() {
     	
-    	ProvinceEntity entity = repository.save(getEntity());
+    	ProvinceEntity entity = repository.save(BuilderTest.getProvinceEntity());
         assertNotNull(repository.findOne(entity.getCode()));
     }
     
@@ -40,18 +41,10 @@ public class ProvinceRepositoryTest {
     @Transactional
     public void update() {
     	
-    	ProvinceEntity entity = repository.save(getEntity());
+    	ProvinceEntity entity = repository.save(BuilderTest.getProvinceEntity());
     	entity.setName("Province One One");
         entity = repository.save(entity);
         entity = repository.findOne(entity.getCode());
         assertEquals("Province One One", entity.getName());
-    }
-    
-    private ProvinceEntity getEntity() {
-    	
-    	ProvinceEntity entity = new ProvinceEntity();
-    	entity.setCode(null);
-    	entity.setName("Province One");
-    	return entity;
     }
 }

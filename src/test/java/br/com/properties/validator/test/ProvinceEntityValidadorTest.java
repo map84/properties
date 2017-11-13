@@ -1,4 +1,4 @@
-package br.com.properties.test;
+package br.com.properties.validator.test;
 
 import static org.junit.Assert.assertEquals;
 
@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import br.com.properties.builder.test.BuilderTest;
 import br.com.properties.entity.ProvinceEntity;
 
 /**
@@ -30,7 +31,7 @@ public class ProvinceEntityValidadorTest {
     @Test
     public void testValidatdorSuccessProvinceEntity() {
     	
-    	ProvinceEntity entity = getEntity();
+    	ProvinceEntity entity = BuilderTest.getProvinceEntity();
     	Set<ConstraintViolation<ProvinceEntity>> violations = validator.validate(entity);
     	assertEquals(0, violations.size());
     }
@@ -41,35 +42,26 @@ public class ProvinceEntityValidadorTest {
     	ProvinceEntity entity = new ProvinceEntity();
     	Set<ConstraintViolation<ProvinceEntity>> violations = validator.validate(entity);
     	assertEquals(1, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("required")).count());
+    		.filter(message->message.contains(BuilderTest.MSG_REQUIRED)).count());
     }
     
     @Test
     public void testValidatdorSizeMustBeBetweenProvinceEntity() {
     	
-    	ProvinceEntity entity = getEntity();
+    	ProvinceEntity entity = BuilderTest.getProvinceEntity();
     	entity.setName("");
     	Set<ConstraintViolation<ProvinceEntity>> violations = validator.validate(entity);
     	assertEquals(1, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("size must be between")).count());
+    		.filter(message->message.contains(BuilderTest.MSG_SIZE)).count());
     }
     
     @Test
     public void testValidatdorSizeMustBeBetween2ProvinceEntity() {
     	
-    	ProvinceEntity entity = getEntity();
+    	ProvinceEntity entity = BuilderTest.getProvinceEntity();
     	entity.setName("0123456789012345678901234567890");
     	Set<ConstraintViolation<ProvinceEntity>> violations = validator.validate(entity);
     	assertEquals(1, violations.parallelStream().map(ConstraintViolation::getMessageTemplate)
-    		.filter(message->message.contains("size must be between")).count());
-    }
-    
-    private ProvinceEntity getEntity() {
-    	
-    	ProvinceEntity entity = new ProvinceEntity();
-    	entity.setCode(1);
-    	entity.setName("Province One");
-    	
-    	return entity;
+    		.filter(message->message.contains(BuilderTest.MSG_SIZE)).count());
     }
 }
