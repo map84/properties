@@ -40,6 +40,9 @@ public class BuilderTest {
     	dto.setSquareMeters(SQUARE_METERS);
     	dto.setPrice((PRICE));
     	dto.setTitle(TITLE);
+    	dto.setProvinces(new ArrayList<String>());
+    	dto.getProvinces().add(PROVINCE_ONE);
+    	dto.getProvinces().add(PROVINCE_TWO);
     	
     	return dto;
     }

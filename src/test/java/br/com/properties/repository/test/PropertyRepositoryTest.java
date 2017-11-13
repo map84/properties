@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -23,7 +22,6 @@ import br.com.properties.repository.PropertyRepository;
  *
  */
 @WebAppConfiguration
-@EnableJpaRepositories(basePackages = "br.com.properties.repository")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:application-context.xml")
 public class PropertyRepositoryTest {
@@ -54,7 +52,6 @@ public class PropertyRepositoryTest {
     }
     
     @Test
-    @Transactional
     public void search() {
     	
        List<PropertyEntity> entities = repository.findByCoordinates(1, 3, 3, 4);

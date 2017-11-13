@@ -19,7 +19,6 @@ public class PropertyMapper implements OrikaMapperFactoryConfigurer {
         .field("beds", "bedrooms")
         .field("baths", "bathrooms")
         .field("squareMeters", "meters")
-        .field("provinces{}", "provinces{name}")
         .byDefault()
         .register();
 	}
