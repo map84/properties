@@ -1,18 +1,18 @@
 # Projeto
 
-## tecnologias e frameworks
+## Tecnologias e frameworks
 
-* ** java 8
-* ** spring boot
-* ** spring data
-* ** orika (framework para mapeamento de objetos: DTO to Entity e  Entity to DTO)
-* ** hibernate validator
-* ** swagger para documentação da api rest
-* ** actuator (medir a saúde da aplicação e disponibilizar métricas)
-* ** H2 para banco de dados
-* ** Mockito para mock durante os testes unitários
+* java 8
+* spring boot
+* spring data
+* orika (framework para mapeamento de objetos: DTO to Entity e  Entity to DTO)
+* hibernate validator
+* swagger para documentação da api rest
+* actuator (medir a saúde da aplicação e disponibilizar métricas)
+* H2 para banco de dados
+* Mockito para mockar objetos durante os testes unitários
 
-## rodando o projeto
+## Rodando o projeto
 
 Após fazer o download do código, faça o seguinte:
 
@@ -22,7 +22,7 @@ cd target
 java -jar properties-1.0.0-SNAPSHOT.jar
 ```
 
-## teste
+## Teste
 
 Você pode testar de duas formas:
 
@@ -68,4 +68,9 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8080/propertie
  
  ## Próximos passos
  
- 
+ * Preparar ambiente de CI (Continuos Integration) e CD (Continuos Delivery)
+ * Utilização de tecnologias/ferramentas como: 
+ 	* Jenkins (criação de pipeline e automatização de processo de integração e entrega)
+ 	* Docker (criar imagem docker do projeto para entrega)
+ 	* Nexus (para armazenamento de imagens docker)
+ 	* Sonar (para uma análise de código mais detalhada)
