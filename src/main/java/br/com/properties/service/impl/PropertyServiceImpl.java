@@ -13,9 +13,8 @@ import br.com.properties.dto.Property;
 import br.com.properties.dto.PropertySearch;
 import br.com.properties.entity.PropertyEntity;
 import br.com.properties.exception.ProvinceException;
-import br.com.properties.json.utils.JsonUtils;
-import br.com.properties.json.utils.Provinces;
 import br.com.properties.repository.PropertyRepository;
+import br.com.properties.rules.ProvincesRules;
 import br.com.properties.service.PropertyService;
 import ma.glasnost.orika.MapperFacade;
 
@@ -35,12 +34,15 @@ public class PropertyServiceImpl implements PropertyService {
 	@Autowired
 	private PropertyRepository repository;
 	
+	@Autowired
+	private ProvincesRules rules;
+	
 	public Long save(Property request) throws ProvinceException {
 		
 		LOGGER.debug("save - INICIO");
 		
 		PropertyEntity entity = orikaMapperFacade.map(request, PropertyEntity.class);
-		Provinces provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.PATH_PROVINCES, Provinces.class);
+		entity.setProvinces(rules.getProvinces(request));
 		entity = repository.save(entity);
 		
 		LOGGER.debug("save - FIM");

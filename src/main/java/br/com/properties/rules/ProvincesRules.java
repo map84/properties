@@ -5,70 +5,136 @@ import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import br.com.properties.dto.Property;
 import br.com.properties.entity.ProvinceEntity;
 import br.com.properties.exception.ProvinceException;
+import br.com.properties.json.utils.Boundaries;
 import br.com.properties.json.utils.JsonUtils;
-import br.com.properties.json.utils.Province;
 import br.com.properties.json.utils.Provinces;
 
+@Component
 public class ProvincesRules {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProvincesRules.class);
+	
+	private Provinces provinces;
+	
+	public ProvincesRules() throws ProvinceException {
+		this.provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.PATH_PROVINCES, Provinces.class);
+	}
 
-	public List<ProvinceEntity> rules(Property request) throws ProvinceException {
+	public List<ProvinceEntity> getProvinces(Property request) throws ProvinceException {
 		
 		LOGGER.debug("rules - INICIO");
 		
 		List<ProvinceEntity> response = new ArrayList<ProvinceEntity>();
-		Provinces provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.PATH_PROVINCES, Provinces.class);
 		
-		if(isGode(provinces.getGode(), request)) {
+		if(isGode(provinces.getGode().getBoundaries(), request)) {
 			
 			ProvinceEntity province = new ProvinceEntity();
-			province.setCode(null);
 			province.setName("Gode");
 			response.add(province);
 		}
 		
-		boolean isRujaUpperX = provinces.getRuja().getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isRujaBottomX = provinces.getRuja().getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isRujaUpperY = provinces.getRuja().getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isRujaBottomY = provinces.getRuja().getBoundaries().getBottomRight().getY() >= request.getY();
+		if(isRuja(provinces.getRuja().getBoundaries(), request)) {
+			
+			ProvinceEntity province = new ProvinceEntity();
+			province.setName("Ruja");
+			response.add(province);
+		}
 		
-		boolean isJabyUpperX = provinces.getJaby().getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isJabyBottomX = provinces.getJaby().getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isJabyUpperY = provinces.getJaby().getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isJabyBottomY = provinces.getJaby().getBoundaries().getBottomRight().getY() >= request.getY();
+		if(isJaby(provinces.getJaby().getBoundaries(), request)) {
+			
+			ProvinceEntity province = new ProvinceEntity();
+			province.setName("Jaby");
+			response.add(province);
+		}
 		
-		boolean isScavyUpperX = provinces.getScavy().getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isScavyBottomX = provinces.getScavy().getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isScavyUpperY = provinces.getScavy().getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isScavyBottomY = provinces.getScavy().getBoundaries().getBottomRight().getY() >= request.getY();
+		if(isScavy(provinces.getScavy().getBoundaries(), request)) {
+			
+			ProvinceEntity province = new ProvinceEntity();
+			province.setName("Scavy");
+			response.add(province);
+		}
 		
-		boolean isGroolaUpperX = provinces.getGroola().getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isGroolaBottomX = provinces.getGroola().getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isGroolaUpperY = provinces.getGroola().getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isGroolaBottomY = provinces.getGroola().getBoundaries().getBottomRight().getY() >= request.getY();
+		if(isGroola(provinces.getGroola().getBoundaries(), request)) {
+			
+			ProvinceEntity province = new ProvinceEntity();
+			province.setName("Groola");
+			response.add(province);
+		}
 		
-		boolean isNovaUpperX = provinces.getNova().getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isNovaBottomX = provinces.getNova().getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isBovaUpperY = provinces.getNova().getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isnovaBottomY = provinces.getNova().getBoundaries().getBottomRight().getY() >= request.getY();
+		if(isNova(provinces.getNova().getBoundaries(), request)) {
+			
+			ProvinceEntity province = new ProvinceEntity();
+			province.setName("Nova");
+			response.add(province);
+		}
 		
 		LOGGER.debug("rules - FIM");
 		
 		return response;
 	}
 	
-	private boolean isGode(Province province, Property request) {
+	private boolean isGode(Boundaries boundary, Property request) {
 		
-		boolean isGodeUpperX = province.getBoundaries().getUpperLeft().getX() >= request.getX();
-		boolean isGodeBottomX = province.getBoundaries().getBottomRight().getX() <= request.getX();
-		boolean isGodeUpperY = province.getBoundaries().getUpperLeft().getY() <= request.getY();
-		boolean isGodeBottomY = province.getBoundaries().getBottomRight().getY() >= request.getY();
+		boolean isGodeUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isGodeBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isGodeUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isGodeBottomY = boundary.getBottomRight().getY() <= request.getY();
 		
 		return isGodeUpperX && isGodeBottomX && isGodeUpperY && isGodeBottomY;
+	}
+	
+	private boolean isRuja(Boundaries boundary, Property request) {
+		
+		boolean isRujaUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isRujaBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isRujaUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isRujaBottomY = boundary.getBottomRight().getY() <= request.getY();
+		
+		return isRujaUpperX && isRujaBottomX && isRujaUpperY && isRujaBottomY;
+	}
+	
+	private boolean isJaby(Boundaries boundary, Property request) {
+	
+		boolean isJabyUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isJabyBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isJabyUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isJabyBottomY = boundary.getBottomRight().getY() <= request.getY();
+		
+		return isJabyUpperX && isJabyBottomX && isJabyUpperY && isJabyBottomY;
+	}
+	
+	private boolean isScavy(Boundaries boundary, Property request) {
+		
+		boolean isScavyUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isScavyBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isScavyUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isScavyBottomY = boundary.getBottomRight().getY() <= request.getY();
+		
+		return isScavyUpperX && isScavyBottomX && isScavyUpperY && isScavyBottomY;
+	}
+	
+	private boolean isGroola(Boundaries boundary, Property request) {
+		
+		boolean isGroolaUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isGroolaBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isGroolaUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isGroolaBottomY = boundary.getBottomRight().getY() <= request.getY();
+		
+		return isGroolaUpperX && isGroolaBottomX && isGroolaUpperY && isGroolaBottomY;
+	}
+	
+	private boolean isNova(Boundaries boundary, Property request) {
+		
+		boolean isNovaUpperX = boundary.getUpperLeft().getX() <= request.getX();
+		boolean isNovaBottomX = boundary.getBottomRight().getX() >= request.getX();
+		boolean isBovaUpperY = boundary.getUpperLeft().getY() >= request.getY();
+		boolean isnovaBottomY = boundary.getBottomRight().getY() <= request.getY();
+		
+		return isNovaUpperX && isNovaBottomX && isBovaUpperY && isnovaBottomY;
 	}
 }
