@@ -18,7 +18,7 @@ import br.com.properties.entity.PropertyEntity;
 public interface PropertyRepository extends JpaRepository<PropertyEntity, Long> {
 
 	@Query("SELECT A FROM PropertyEntity A WHERE A.latitude <= :bx AND A.latitude >= :ax "
-			+ "AND A.longitude <= :by AND A.longitude >= :ay ")
+			+ "AND A.longitude >= :by AND A.longitude <= :ay ")
 	List<PropertyEntity> findByCoordinates(@Param("ax")Integer ax, @Param("ay")Integer ay, 
 			@Param("bx")Integer bx, @Param("by")Integer by);
 }

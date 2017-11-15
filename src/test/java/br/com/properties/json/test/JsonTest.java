@@ -20,7 +20,7 @@ public class JsonTest {
     @Test
     public void testConvertJsonToProvinces() throws ProvinceException {
     	
-    	Provinces provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.PATH_PROVINCES, Provinces.class);
+    	Provinces provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.FILE_PROVINCES, Provinces.class);
     	
     	assertEquals(600, provinces.getGode().getBoundaries().getBottomRight().getX().intValue());
     	assertEquals(500, provinces.getGode().getBoundaries().getBottomRight().getY().intValue());

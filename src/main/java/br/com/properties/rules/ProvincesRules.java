@@ -22,7 +22,7 @@ public class ProvincesRules {
 	private Provinces provinces;
 	
 	public ProvincesRules() throws ProvinceException {
-		this.provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.PATH_PROVINCES, Provinces.class);
+		this.provinces = (Provinces) JsonUtils.convertJsonToObject(JsonUtils.FILE_PROVINCES, Provinces.class);
 	}
 
 	public List<ProvinceEntity> getProvinces(Property request) throws ProvinceException {
