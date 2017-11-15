@@ -70,7 +70,7 @@ curl -X GET --header 'Accept: application/json' 'http://localhost:8080/propertie
  
  * Preparar ambiente de CI (Continuos Integration) e CD (Continuos Delivery)
  * Utilização de tecnologias/ferramentas como: 
- 	* Jenkins (criação de pipeline e automatização de processo de integração e entrega)
+ 	* Jenkins (criação de pipeline e automatização de processos de integração e entrega)
  	* Docker (criar imagem docker do projeto para entrega)
  	* Nexus (para armazenamento de imagens docker)
  	* Sonar (para uma análise de código mais detalhada)
